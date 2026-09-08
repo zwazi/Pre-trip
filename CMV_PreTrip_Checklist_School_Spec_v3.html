@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#171715" name="theme-color"/>
+<title>CMV Pre-Trip Inspection Checklist v3</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg:#171715; --panel:#21211e; --panel2:#292925; --panel3:#34342e;
+  --text:#f2eee5; --muted:#b8b5a9; --line:#41413a; --accent:#e8b76b;
+  --ok:#d7aa62; --warn:#e8b76b; --danger:#ed9c86;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+button,input{font:inherit}
+.app-header{position:sticky;top:0;z-index:50;background:rgba(23,23,21,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.header-inner{max-width:980px;margin:auto;padding:12px 14px}
+.title-row{display:flex;align-items:flex-start;gap:12px}
+.title-wrap{flex:1;min-width:0}
+h1{font-size:19px;line-height:1.15;margin:0 0 4px}
+.subtitle{font-size:12px;color:var(--muted)}
+.progress-wrap{min-width:155px;text-align:right}
+.progress-label{font-size:12px;color:var(--muted);margin-bottom:5px}
+.progress-track{height:8px;border-radius:999px;background:#41413a;overflow:hidden}
+.progress-fill{height:100%;width:0;background:var(--ok);transition:width .18s ease}
+.toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;margin-top:11px}
+.search{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:9px;padding:10px 12px;outline:none}
+.search:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(232,183,107,.16)}
+.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:9px;padding:9px 11px;cursor:pointer;font-weight:650}
+.btn:hover{background:var(--panel3)}
+main{max-width:980px;margin:auto;padding:14px 14px 60px}
+.intro{display:grid;gap:10px;margin-bottom:12px}
+.info-card,details.reference,.inspection-section{border:1px solid var(--line);background:var(--panel);border-radius:12px}
+.info-card{padding:13px}
+.info-card strong{color:var(--accent)}
+.core{margin-top:6px;font-weight:800;letter-spacing:.02em}
+details.reference{padding:0;overflow:hidden}
+details.reference summary{cursor:pointer;padding:12px 14px;background:var(--panel2);font-weight:800;list-style:none}
+details.reference summary::-webkit-details-marker{display:none}
+.reference-body{padding:11px 13px}
+.acro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:7px}
+.acro-row{display:grid;grid-template-columns:64px 1fr;gap:8px;font-size:13px;padding:6px 7px;border-radius:7px;background:rgba(255,255,255,.025)}
+.acro-key{font-weight:900;color:var(--accent)}
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}
+.pattern-card{border:1px solid var(--line);border-radius:9px;padding:10px;background:#1c1c19}
+.pattern-card h3{font-size:13px;margin:0 0 5px;color:var(--accent)}
+.pattern-card p{font-size:13px;color:#d5d1c6;margin:0}
+.rapid-grid{display:grid;gap:5px}
+.rapid-row{display:grid;grid-template-columns:minmax(110px,.45fr) 1fr;gap:9px;padding:7px 8px;border-bottom:1px solid rgba(184,181,169,.18);font-size:13px}
+.rapid-row:last-child{border-bottom:0}
+.inspection-section{margin:11px 0;overflow:hidden}
+.section-toggle{width:100%;border:0;background:var(--panel2);color:var(--text);padding:13px 14px;display:flex;justify-content:space-between;gap:12px;text-align:left;cursor:pointer}
+.section-title{font-size:15px;font-weight:850}
+.section-meta{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:12px;white-space:nowrap}
+.chev{font-size:18px;line-height:1;transition:transform .15s ease}
+.inspection-section.collapsed .chev{transform:rotate(-90deg)}
+.inspection-section.collapsed .section-body{display:none}
+.section-body{padding:0}
+.check-card{position:relative;display:flex;gap:12px;align-items:flex-start;padding:13px 14px;border-top:1px solid var(--line);cursor:pointer}
+.check-card:first-child{border-top:0}
+.check-card:hover{background:rgba(255,255,255,.02)}
+.check-card.callout{background:rgba(173,104,29,.07)}
+.task-check{position:absolute;opacity:0;pointer-events:none}
+.box{flex:0 0 24px;width:24px;height:24px;border:2px solid #939083;border-radius:7px;margin-top:1px;position:relative}
+.task-check:checked + .box{background:var(--ok);border-color:var(--ok)}
+.task-check:checked + .box:after{content:"✓";position:absolute;color:#1a1915;font-size:19px;font-weight:1000;left:3px;top:-3px}
+.task-check:checked ~ .card-body{opacity:.52}
+.card-body{min-width:0;display:block}
+.component-title{display:block;font-weight:850;font-size:14px}
+.script-lines{margin:7px 0 0;padding-left:18px;color:#ddd9cd;font-size:13.5px}
+.script-lines li{margin:3px 0}
+.hidden{display:none!important}
+.footer-note{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}
+@media(max-width:650px){
+  .title-row{display:block} .progress-wrap{text-align:left;margin-top:8px;min-width:0}
+  .toolbar{grid-template-columns:1fr 1fr} .search{grid-column:1/-1}
+  .acro-grid,.pattern-grid{grid-template-columns:1fr}
+  .check-card{padding:12px} .section-toggle{padding:12px}
+}
+@media print{
+  :root{color-scheme:light;--bg:#fff;--panel:#fff;--panel2:#f0f0ed;--text:#111;--muted:#555;--line:#bbb;--accent:#36583b}
+  .app-header,.box,.footer-note{display:none!important}
+  body{background:#fff;color:#111} main{max-width:none;padding:0}
+  details.reference{break-inside:avoid} details.reference:not([open])>.reference-body{display:block}
+  .inspection-section{break-inside:avoid} .section-body{display:block!important}
+  .task-check:checked~.card-body{opacity:1}
+}
+
+.state-badge{
+  display:inline-block;
+  margin-top:6px;
+  padding:4px 8px;
+  border-radius:999px;
+  background:#343329;
+  border:1px solid #78725a;
+  color:#e8d8ae;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.02em;
+}
+.state-on{background:#12351f;border-color:#256b3e;color:#bdf5ca}
+.state-off{background:#3a2420;border-color:#a96e59;color:#ffc3ac}
+
+/* Compact, accessible controls and a charcoal-and-amber palette. */
+body{background:radial-gradient(ellipse at top left,#24221c,transparent 48rem),var(--bg)}
+.header-inner{padding:10px 18px}
+.header-summary{display:flex;align-items:center;gap:14px}
+.progress-toggle{display:flex;align-items:center;gap:12px;width:100%;padding:3px 0;border:0;background:none;color:var(--text);cursor:pointer;text-align:left;min-height:44px}
+.progress-wrap{flex:1;min-width:0;text-align:left}
+.progress-label{display:flex;justify-content:space-between;gap:8px;font-weight:650;margin-bottom:6px}
+.progress-fill{background:linear-gradient(90deg,#bd8a43,#f0c57c)}
+.header-chevron{font-size:20px;transition:transform .18s}
+.app-header.is-collapsed .header-chevron{transform:rotate(-90deg)}
+.header-details{padding:12px 0 4px;border-top:1px solid var(--line);margin-top:7px}
+h1{font-size:20px;letter-spacing:.025em;color:#f1d29f}
+.subtitle{max-width:730px;line-height:1.6}
+main{padding-top:22px}
+.info-card,details.reference,.inspection-section{box-shadow:0 3px 14px rgba(0,0,0,.16);border-radius:14px}
+.info-card{border-left:4px solid var(--accent);line-height:1.65;padding:16px}
+.info-card strong{font-size:12px;letter-spacing:.09em}
+.reference summary{display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:.06em}
+.reference summary:after{content:'+';font-size:20px;line-height:1}
+.reference[open] summary:after{content:'−'}
+.section-toggle{padding:16px;background:#2b2b25;align-items:center;min-height:56px}
+.section-title{color:#f1d29f;line-height:1.4}
+.section-count{background:var(--panel);padding:4px 8px;border:1px solid var(--line);border-radius:999px;font-variant-numeric:tabular-nums}
+.inspection-section{margin:16px 0}
+.check-card{padding:16px;gap:13px}
+.check-card:hover{background:#292924}
+.component-title{line-height:1.5}
+.script-lines{font-size:14px;line-height:1.6}
+.script-lines li{margin:4px 0;padding-left:2px}
+.script-lines li::marker{color:#c5a66e}
+.task-check:checked~.card-body{opacity:.68}
+.task-check:focus-visible+.box,button:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.btn{min-height:44px}
+#reset{color:#f0b29a;background:#332622;border-color:#755447}
+.search{min-height:44px}
+[hidden]{display:none!important}
+.empty-state{padding:24px;text-align:center;color:var(--muted)}
+@media(max-width:650px){
+ .header-inner{padding:6px 14px}.progress-wrap{margin-top:0}.header-details{max-height:65dvh;overflow-y:auto}
+ h1{font-size:17px}.subtitle{font-size:12px}.check-card{padding:14px 12px}.section-toggle{padding:14px 12px}
+ main{padding:16px 10px 40px}.section-title{font-size:14px}.section-meta{gap:6px}
+ .rapid-row{grid-template-columns:minmax(0,.7fr) minmax(0,1fr)}.acro-row{grid-template-columns:60px minmax(0,1fr)}
+ .component-title,.rapid-row b{overflow-wrap:anywhere}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
+@media print{
+ body{background:#fff}.script-lines,.pattern-card p,.section-title{color:#111}
+ .section-toggle,.pattern-card,.check-card.callout,.state-badge{background:#fff;color:#111}
+ .script-lines li::marker{color:#555}
+ .check-card{break-inside:avoid}.inspection-section{break-inside:auto;box-shadow:none}
+ .hidden{display:block!important}.empty-state{display:none!important}
+}
+
+</style>
+</head>
+<body>
+<header class="app-header">
+<div class="header-inner">
+<div class="header-summary">
+<button class="progress-toggle" id="headerToggle" type="button" aria-expanded="true" aria-controls="headerDetails" aria-label="Collapse header controls">
+<span class="progress-wrap">
+<span class="progress-label"><span><span id="doneCount">0</span> / <span id="totalCount">137</span> checked</span><span id="pct">0%</span></span>
+<span class="progress-track" style="display:block"><span class="progress-fill" id="progressFill" style="display:block"></span></span>
+</span><span class="header-chevron" aria-hidden="true">⌄</span>
+</button>
+</div>
+<div class="header-details" id="headerDetails">
+<h1>CMV PRE-TRIP INSPECTION SCRIPT</h1>
+<div class="subtitle">Non-Modernized CDL Vehicle Inspection · Memorization-focused version using repeatable inspection acronyms · Core rhythm: PMS • CBB • WTF • ABC • NL</div>
+<div class="toolbar">
+<input autocomplete="off" class="search" id="search" aria-label="Search the inspection script" placeholder="Search the script…" type="search"/>
+<button class="btn" id="collapseAll" type="button">Collapse all</button>
+<button class="btn" id="reset" type="button">Reset</button>
+</div>
+</div>
+</div>
+</header>
+<main>
+<div class="intro">
+<div class="info-card">
+<strong>HOW TO USE THIS SCRIPT</strong><br/>
+      The bracketed acronyms are memory prompts. During the exam, say the full phrase aloud.
+      Example: [PMS + CBB] = “Properly mounted and secure; not cracked, bent, or broken.”
+      <div class="core">Core rhythm: PMS • CBB • WTF • ABC • NL</div>
+</div>
+<details class="reference">
+<summary>ACRONYM KEY</summary>
+<div class="reference-body"><div class="acro-grid"><div class="acro-row"><span class="acro-key">PMS</span><span>Properly mounted and secure</span></div>
+<div class="acro-row"><span class="acro-key">CBB</span><span>Not cracked, bent, or broken</span></div>
+<div class="acro-row"><span class="acro-key">WTF</span><span>Not worn, torn, or frayed</span></div>
+<div class="acro-row"><span class="acro-key">ABC</span><span>No abrasions, bulges, or cuts</span></div>
+<div class="acro-row"><span class="acro-key">NL</span><span>Not leaking / no leaks</span></div>
+<div class="acro-row"><span class="acro-key">LM</span><span>Nothing loose or missing</span></div>
+<div class="acro-row"><span class="acro-key">PI</span><span>Properly inflated / inflated to manufacturer’s specifications; verify with tire-pressure gauge</span></div>
+<div class="acro-row"><span class="acro-key">SC</span><span>Securely connected</span></div>
+<div class="acro-row"><span class="acro-key">CC</span><span>Clean and clear</span></div>
+<div class="acro-row"><span class="acro-key">OD</span><span>Operating properly and not damaged</span></div>
+<div class="acro-row"><span class="acro-key">NR</span><span>No rust trails indicating looseness</span></div>
+<div class="acro-row"><span class="acro-key">NDW</span><span>No damage or illegal welds</span></div>
+<div class="acro-row"><span class="acro-key">FF</span><span>Free of foreign objects</span></div>
+<div class="acro-row"><span class="acro-key">DRY</span><span>Free of oil or grease contamination</span></div>
+<div class="acro-row"><span class="acro-key">3/4</span><span>No more than 3/4 inch of belt play</span></div>
+<div class="acro-row"><span class="acro-key">4/32</span><span>Minimum steer-tire tread depth</span></div>
+<div class="acro-row"><span class="acro-key">2/32</span><span>Minimum tread depth for other tires</span></div>
+<div class="acro-row"><span class="acro-key">HW</span><span>Not missing any hardware</span></div>
+<div class="acro-row"><span class="acro-key">PC</span><span>Proper color; state the actual color</span></div>
+<div class="acro-row"><span class="acro-key">FCL</span><span>Function check later / will check operation later</span></div>
+<div class="acro-row"><span class="acro-key">MFS</span><span>Filled to manufacturer’s specifications; state how you verify it</span></div>
+<div class="acro-row"><span class="acro-key">CBD</span><span>Not cracked, broken, or damaged</span></div>
+<div class="acro-row"><span class="acro-key">BD</span><span>Belt driven</span></div>
+<div class="acro-row"><span class="acro-key">GD</span><span>Gear driven</span></div>
+<div class="acro-row"><span class="acro-key">RS</span><span>No rust or soot that would indicate a leak</span></div>
+<div class="acro-row"><span class="acro-key">BUSH</span><span>Bushings are in place</span></div>
+<div class="acro-row"><span class="acro-key">CNCP</span><span>Castle nuts and cotter pins are in place</span></div>
+<div class="acro-row"><span class="acro-key">NIW</span><span>No illegal welds / free from illegal welds</span></div>
+<div class="acro-row"><span class="acro-key">DEB</span><span>Free from debris / contaminants</span></div>
+<div class="acro-row"><span class="acro-key">EVEN</span><span>Worn evenly</span></div>
+<div class="acro-row"><span class="acro-key">1-IN</span><span>No more than 1 inch of play</span></div>
+<div class="acro-row"><span class="acro-key">1/4</span><span>Not worn dangerously thin / at least 1/4 inch where specified</span></div>
+<div class="acro-row"><span class="acro-key">LOCK</span><span>In the locked position / locking pins engaged</span></div>
+<div class="acro-row"><span class="acro-key">NG</span><span>No gap</span></div>
+<div class="acro-row"><span class="acro-key">GR</span><span>Properly greased</span></div>
+<div class="acro-row"><span class="acro-key">CAP</span><span>Cap is present / properly in place</span></div>
+<div class="acro-row"><span class="acro-key">RING</span><span>Brake-chamber ring is in place</span></div>
+<div class="acro-row"><span class="acro-key">SST</span><span>Same size and type</span></div>
+<div class="acro-row"><span class="acro-key">NDG</span><span>Not dragging on the ground</span></div>
+<div class="acro-row"><span class="acro-key">COV</span><span>Covers both tires</span></div>
+<div class="acro-row"><span class="acro-key">3PT</span><span>Maintain three points of contact</span></div>
+<div class="acro-row"><span class="acro-key">SAFE</span><span>Safe-start procedure</span></div></div></div>
+</details>
+<details class="reference">
+<summary>UNIVERSAL PATTERNS</summary>
+<div class="reference-body"><div class="pattern-grid"><article class="pattern-card">
+<h3>Hard metal part [PMS + CBB]</h3>
+<p>Properly mounted and secure. Not cracked, bent, or broken.</p>
+</article>
+<article class="pattern-card">
+<h3>Hose / rubber line [PMS + ABC + NL]</h3>
+<p>Properly mounted and secure. No abrasions, bulges, or cuts, and not leaking.</p>
+</article>
+<article class="pattern-card">
+<h3>Belt [PMS + WTF + 3/4]</h3>
+<p>Properly mounted and secure. Not worn, torn, or frayed, with no more than three-quarters inch of play.</p>
+</article>
+<article class="pattern-card">
+<h3>Fluid component [PMS + CBB + NL]</h3>
+<p>Properly mounted and secure. Not cracked, bent, or broken, and not leaking. Fluid level is within the safe operating range.</p>
+</article>
+<article class="pattern-card">
+<h3>Tire [ABC + PI + FF + TREAD]</h3>
+<p>No abrasions, bulges, or cuts. Properly inflated, checked with a tire-pressure gauge. Free of foreign objects. Check correct tread depth.</p>
+</article>
+<article class="pattern-card">
+<h3>Rim [CBB + NDW]</h3>
+<p>Not cracked, bent, or broken, with no damage or illegal welds.</p>
+</article>
+<article class="pattern-card">
+<h3>Lug nuts [LM + NR]</h3>
+<p>None loose or missing; no rust trails or shiny threads indicating looseness.</p>
+</article>
+<article class="pattern-card">
+<h3>Brake friction surface [PMS + CBB + DRY]</h3>
+<p>Properly mounted and secure, not cracked or broken, and free of oil or grease.</p>
+</article></div></div>
+</details>
+<details class="reference">
+<summary>RAPID MEMORY PATTERN</summary>
+<div class="reference-body"><div class="rapid-grid"><div class="rapid-row"><span>METAL</span><b>PMS → CBB</b></div>
+<div class="rapid-row"><span>HOSE</span><b>PMS → ABC → NL</b></div>
+<div class="rapid-row"><span>BELT</span><b>PMS → WTF → 3/4</b></div>
+<div class="rapid-row"><span>FLUID COMPONENT</span><b>PMS → CBB → NL → MFS</b></div>
+<div class="rapid-row"><span>TIRE</span><b>PI/MFS → ABC → EVEN → FF → TREAD</b></div>
+<div class="rapid-row"><span>RIM</span><b>PMS → CBB → NIW</b></div>
+<div class="rapid-row"><span>LUGS</span><b>LM → NR</b></div>
+<div class="rapid-row"><span>BRAKES</span><b>PMS → CBB → HW → DEB/DRY</b></div></div></div>
+</details>
+</div>
+<section class="inspection-section" id="section-1">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">1. FRONT OF VEHICLE</span>
+<span class="section-meta"><span class="section-count">0/5</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="general condition i check underneath the truck and make sure there are no puddles, drips, hanging wires, or hoses." class="check-card">
+<input class="task-check" data-id="c1" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">General condition</span>
+<ul class="script-lines"><li>I check underneath the truck and make sure there are no puddles, drips, hanging wires, or hoses.</li></ul>
+</span>
+</label>
+<label data-search="id lights [pms + cbd + hw + pc + fcl] 3 id lights on top in the middle properly mounted and secure not cracked, broken, or damaged not missing any hardware proper color which is amber i will check the function later" class="check-card">
+<input class="task-check" data-id="c2-id" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">ID Lights [PMS + CBD + HW + PC + FCL]</span>
+<ul class="script-lines"><li>3 ID lights on top in the middle</li><li>Properly mounted and secure</li><li>Not cracked, broken, or damaged</li><li>Not missing any hardware</li><li>Proper color which is amber</li><li>I will check the function later</li></ul>
+</span>
+</label>
+<label data-search="clearance lights [pms + cbd + hw + pc + fcl] clearance lights on top on the outsides properly mounted and secure not cracked, broken, or damaged not missing any hardware proper color which is amber i will check the function later" class="check-card">
+<input class="task-check" data-id="c2-clearance" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Clearance Lights [PMS + CBD + HW + PC + FCL]</span>
+<ul class="script-lines"><li>Clearance lights on top on the outsides</li><li>Properly mounted and secure</li><li>Not cracked, broken, or damaged</li><li>Not missing any hardware</li><li>Proper color which is amber</li><li>I will check the function later</li></ul>
+</span>
+</label>
+<label data-search="headlights / brights [pms + cbd + hw + pc + fcl] headlights and high beams properly mounted and secure not cracked, broken, or damaged not missing any hardware proper color which is clear i will check the function later" class="check-card">
+<input class="task-check" data-id="c2-headlights" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Headlights / Brights [PMS + CBD + HW + PC + FCL]</span>
+<ul class="script-lines"><li>Headlights and high beams</li><li>Properly mounted and secure</li><li>Not cracked, broken, or damaged</li><li>Not missing any hardware</li><li>Proper color which is clear</li><li>I will check the function later</li></ul>
+</span>
+</label>
+<label data-search="indicator lights, running lights, 4-way lights, &amp; reflector [pms + cbd + hw + pc + fcl] indicator lights, four-way, running, with a corresponding reflector properly mounted and secure not cracked, broken, or damaged not missing any hardware proper color which is amber i will check the function later" class="check-card">
+<input class="task-check" data-id="c2-indicators" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Indicator Lights, Running Lights, 4-Way Lights, &amp; Reflector [PMS + CBD + HW + PC + FCL]</span>
+<ul class="script-lines"><li>Indicator lights, four-way, running, with a corresponding reflector</li><li>Properly mounted and secure</li><li>Not cracked, broken, or damaged</li><li>Not missing any hardware</li><li>Proper color which is amber</li><li>I will check the function later</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-2">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">2. PASSENGER-SIDE ENGINE COMPARTMENT</span>
+<span class="section-meta"><span class="section-count">0/4</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="unlatch the hood on both sides and yell “clear!” when opening [pms + abc + nl + hw]" class="check-card callout">
+<input class="task-check" data-id="c3" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Unlatch the hood on both sides and yell “CLEAR!” when opening [PMS + ABC + NL + HW]</span>
+</span>
+</label>
+<label data-search="hoses [pms + abc + nl + hw] properly mounted and secure no abrasions, bulges, or cuts not leaking not missing any hardware" class="check-card">
+<input class="task-check" data-id="c4" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Hoses [PMS + ABC + NL + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>No abrasions, bulges, or cuts</li><li>Not leaking</li><li>Not missing any hardware</li></ul>
+</span>
+</label>
+
+<label data-search="exhaust [pms + cbb + hw + rs + nl + rust] check exhaust in the engine bay, as well as on the rear of the tractor properly mounted and secure not cracked, bent, or broken not missing any hardware no rust or soot that would indicate a leak" class="check-card">
+<input class="task-check" data-id="c6" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Exhaust [PMS + CBB + HW + RS + NL + Rust]</span>
+<ul class="script-lines"><li>Check exhaust in the engine bay, as well as on the rear of the tractor</li><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>No rust or soot that would indicate a leak</li></ul>
+</span>
+</label>
+<label data-search="alternator [pms + cbb + hw + wtf + bd + 3/4 + belt: wtf] belt driven properly mounted and secure not cracked, bent, or broken not missing any hardware wires are properly mounted and secure wires are not worn, torn, or frayed belt is properly mounted and secure belt is not worn, torn, or frayed when pushed or pulled by hand, the belt has no more than ¾” of play" class="check-card">
+<input class="task-check" data-id="c7" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Alternator [PMS + CBB + HW + WTF + BD + 3/4 + belt: WTF]</span>
+<ul class="script-lines"><li>BELT DRIVEN</li><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Wires are properly mounted and secure</li><li>Wires are not worn, torn, or frayed</li><li>Belt is properly mounted and secure</li><li>Belt is not worn, torn, or frayed</li><li>When pushed or pulled by hand, the belt has no more than ¾” of play</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-3">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">3. DRIVER-SIDE ENGINE COMPARTMENT</span>
+<span class="section-meta"><span class="section-count">0/8</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="coolant reservoir [pms + cbd + nl + mfs + cbb] properly mounted and secure not cracked, broken, or damaged not leaking filled to manufacturer’s specifications. i know this because i can see it is filled to the line through the container" class="check-card">
+<input class="task-check" data-id="c8" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Coolant reservoir [PMS + CBD + NL + MFS + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, broken, or damaged</li><li>Not leaking</li><li>Filled to manufacturer’s specifications. I know this because I can see it is filled to the line through the container</li></ul>
+</span>
+</label>
+<label data-search="water pump [pms + cbb + nl + wtf + bd + 3/4 + belt: wtf] belt driven! properly mounted and secure not cracked, bent, or broken not leaking the belt is properly mounted and secure the belt is not worn, torn, or frayed when pushed or pulled by hand, the belt has no more than ¾” of play" class="check-card">
+<input class="task-check" data-id="c9" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Water pump [PMS + CBB + NL + WTF + BD + 3/4 + belt: WTF]</span>
+<ul class="script-lines"><li>Belt driven!</li><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not leaking</li><li>The belt is properly mounted and secure</li><li>The belt is not worn, torn, or frayed</li><li>When pushed or pulled by hand, the belt has no more than ¾” of play</li></ul>
+</span>
+</label>
+
+<label data-search="engine oil [pms + cbb + nl + mfs] dipstick is properly mounted and secure not cracked, bent, or broken not leaking filled to manufacturer’s specifications. i know this because i can pull out the dipstick, wipe it off, reinsert it, and pull it out again, and the fill line should be between add and fill" class="check-card">
+<input class="task-check" data-id="c11" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Engine oil [PMS + CBB + NL + MFS]</span>
+<ul class="script-lines"><li>Dipstick is properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not leaking</li><li>Filled to manufacturer’s specifications. I know this because I can pull out the dipstick, wipe it off, reinsert it, and pull it out again, and the fill line should be between add and fill</li></ul>
+</span>
+</label>
+
+<label data-search="air compressor [pms + cbb + hw + gd] properly mounted and secure not cracked, bent, or broken not missing any hardware gear driven" class="check-card">
+<input class="task-check" data-id="c13" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Air compressor [PMS + CBB + HW + GD]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>GEAR DRIVEN</li></ul>
+</span>
+</label>
+<label data-search="power-steering pump [pms + cbb + nl + hw] properly mounted and secure not cracked, bent, or broken not leaking not missing and hardware" class="check-card">
+<input class="task-check" data-id="c12" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Power-steering pump [PMS + CBB + NL + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not leaking</li><li>Not missing and hardware</li></ul>
+</span>
+</label>
+<label data-search="power-steering reservoir [pms + cbb + nl + hw + mfs + belt: wtf + 3/4] properly mounted and secure not cracked, bent, or broken not missing and hardware filled to manufacturer’s specifications. i know this because i can see the fill line through the sight glass not leaking the hose is properly mounted and secure the hose has no bends, abrasions, or cuts the hose is not missing any hardware the hose is not leaking" class="check-card">
+<input class="task-check" data-id="c14" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Power-steering reservoir [PMS + CBB + NL + HW + MFS + belt: WTF + 3/4]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing and hardware</li><li>Filled to manufacturer’s specifications. I know this because I can see the fill line through the sight glass</li><li>Not leaking</li><li>The hose is properly mounted and secure</li><li>The hose has no bends, abrasions, or cuts</li><li>The hose is not missing any hardware</li><li>The hose is not leaking</li></ul>
+</span>
+</label>
+<label data-search="steering gearbox [pms + cbb + nl + hw] properly mounted and secure not cracked, bent, or broken not missing any hardware not leaking" class="check-card">
+<input class="task-check" data-id="c15" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Steering Gearbox [PMS + CBB + NL + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Not leaking</li></ul>
+</span>
+</label>
+<label data-search="steering linkage - pitman arm, drag link, tie rod [pms + cbb + hw + bush + cncp + nl] properly mounted and secure not cracked, bent, or broken not missing any hardware bushings are in place castle nuts and cotter pins are in place on both sides" class="check-card">
+<input class="task-check" data-id="c16" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Steering linkage - Pitman arm, drag link, tie rod [PMS + CBB + HW + BUSH + CNCP + NL]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Bushings are in place</li><li>Castle nuts and cotter pins are in place on both sides</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-4">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">4. DRIVER-SIDE FRONT SUSPENSION</span>
+<span class="section-meta"><span class="section-count">0/4</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="leaf spring hangers [pms + cbb + hw + bush] both front and rear properly mounted and secure not cracked, bent, or broken not missing any hardware both bushings in the front and rear are in place" class="check-card">
+<input class="task-check" data-id="c17" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Leaf spring hangers [PMS + CBB + HW + BUSH]</span>
+<ul class="script-lines"><li>Both front and rear</li><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Both bushings in the front and rear are in place</li></ul>
+</span>
+</label>
+<label data-search="leaf springs [pms + cbb + hw + lm] properly mounted and secure not cracked, bent, or broken not missing and hardware not twisted, shifted, or scissored held on by 2 u-bolts" class="check-card">
+<input class="task-check" data-id="c18" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Leaf springs [PMS + CBB + HW + LM]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing and hardware</li><li>Not twisted, shifted, or scissored</li><li>Held on by 2 U-bolts</li></ul>
+</span>
+</label>
+<label data-search="u-bolts [pms + cbb + hw + lm] properly mounted and secure not cracked, bent, or broken not missing any hardware secured by 4 nuts on the bottom side" class="check-card">
+<input class="task-check" data-id="c19" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">U-bolts [PMS + CBB + HW + LM]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Secured by 4 nuts on the bottom side</li></ul>
+</span>
+</label>
+<label data-search="shock absorber [pms + cbb + nl + hw + bush] properly mounted and secure on both the top and bottom not missing any hardware not cracked, bent, or broken the bushings on both the top and bottom are in place not leaking" class="check-card">
+<input class="task-check" data-id="c20" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Shock absorber [PMS + CBB + NL + HW + BUSH]</span>
+<ul class="script-lines"><li>Properly mounted and secure on both the top and bottom</li><li>Not missing any hardware</li><li>Not cracked, bent, or broken</li><li>The bushings on both the top and bottom are in place</li><li>Not leaking</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-5">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">5. DRIVER-SIDE FRONT BRAKE</span>
+<span class="section-meta"><span class="section-count">0/5</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="brake hose [pms + abc + nl + hw] properly mounted and secure no abrasions, bulges, or cuts not leaking not missing any hardware" class="check-card">
+<input class="task-check" data-id="c21" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake hose [PMS + ABC + NL + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>No abrasions, bulges, or cuts</li><li>Not leaking</li><li>Not missing any hardware</li></ul>
+</span>
+</label>
+<label data-search="brake chamber [pms + cbb + nl + hw + ring] properly mounted and secure not cracked, bent, or broken not missing any hardware not leaking ring is in place" class="check-card">
+<input class="task-check" data-id="c22" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake chamber [PMS + CBB + NL + HW + RING]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Not leaking</li><li>Ring is in place</li></ul>
+</span>
+</label>
+<label data-search="slack adjuster and pushrod [pms + cbb + hw + 1-in] properly mounted and secure not cracked, bent, or broken not missing any hardware when the brakes are released, and it is pulled by hand, there is no more than one inch of play." class="check-card">
+<input class="task-check" data-id="c23" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Slack adjuster and pushrod [PMS + CBB + HW + 1-IN]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>When the brakes are released, and it is pulled by hand, there is no more than one inch of play.</li></ul>
+</span>
+</label>
+<label data-search="brake drum [pms + cbb + niw + deb + dry] properly mounted and secure not cracked, bent, or broken no illegal welds free from debris" class="check-card">
+<input class="task-check" data-id="c24" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake drum [PMS + CBB + NIW + DEB + DRY]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>No illegal welds</li><li>Free from debris</li></ul>
+</span>
+</label>
+<label data-search="brake lining [pms + cbb + hw + 1/4 + dry] properly mounted and secure not cracked, bent, or broken not missing any hardware not worn dangerously thin (¼”)" class="check-card">
+<input class="task-check" data-id="c25" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake lining [PMS + CBB + HW + 1/4 + DRY]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Not worn dangerously thin (¼”)</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-6">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">6. DRIVER-SIDE STEER WHEEL</span>
+<span class="section-meta"><span class="section-count">0/5</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="tire [abc + even + 4/32 + pi + ff] properly inflated. i know this because i checked with a tire pressure gauge on the valve stem no abrasions, bulges, or cuts free of foreign objects worn evenly on both sides tread depth is no less than 4/32”" class="check-card">
+<input class="task-check" data-id="c26" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Tire [ABC + EVEN + 4/32 + PI + FF]</span>
+<ul class="script-lines"><li>Properly inflated. I know this because I checked with a tire pressure gauge on the valve stem</li><li>No abrasions, bulges, or cuts</li><li>Free of foreign objects</li><li>Worn evenly on both sides</li><li>Tread depth is no less than 4/32”</li></ul>
+</span>
+</label>
+<label data-search="valve stem [pms + cbb + nl + hw + cap] properly mounted and secure not cracked, bent, or broken not missing any hardware the cap is in place and is not leaking" class="check-card">
+<input class="task-check" data-id="c27" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Valve stem [PMS + CBB + NL + HW + CAP]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>The cap is in place and is not leaking</li></ul>
+</span>
+</label>
+<label data-search="rim [pms + cbb + niw + ndw] properly mounted and secure not cracked, bent, or broken free from illegal welds" class="check-card">
+<input class="task-check" data-id="c28" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Rim [PMS + CBB + NIW + NDW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Free from illegal welds</li></ul>
+</span>
+</label>
+<label data-search="lug nuts [pms + cbb + lm + nr] properly mounted and secure not cracked, bent, or broken none are missing there is no rust or metal shavings that would indicate an over-tightened or loose nut" class="check-card">
+<input class="task-check" data-id="c29" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Lug nuts [PMS + CBB + LM + NR]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>None are missing</li><li>There is no rust or metal shavings that would indicate an over-tightened or loose nut</li></ul>
+</span>
+</label>
+<label data-search="hub seal [pms + cbb + nl + hw + mfs] properly mounted and secure not cracked, bent, or broken not missing and hardware filled to manufacturer’s specifications not leaking" class="check-card">
+<input class="task-check" data-id="c30" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Hub seal [PMS + CBB + NL + HW + MFS]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing and hardware</li><li>Filled to manufacturer’s specifications</li><li>Not leaking</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-7">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">7. DRIVER SIDE OF TRACTOR</span>
+<span class="section-meta"><span class="section-count">0/6</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="indicator light / four-way light / running light / reflector [pms + cbd + hw + pc + fcl + cbb + od] properly mounted and secure not cracked, broken, or damaged not missing any hardware proper color - amber check the function later" class="check-card">
+<input class="task-check" data-id="c31" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Indicator Light / Four-way Light / Running Light / Reflector [PMS + CBD + HW + PC + FCL + CBB + OD]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, broken, or damaged</li><li>Not missing any hardware</li><li>Proper color - Amber</li><li>Check the function later</li></ul>
+</span>
+</label>
+<label data-search="mirror mount [pms + cbb + hw + od] properly mounted and secure not cracked, bent, or broken not missing and hardware" class="check-card">
+<input class="task-check" data-id="c32" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Mirror Mount [PMS + CBB + HW + OD]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing and hardware</li></ul>
+</span>
+</label>
+<label data-search="steps [pms + cbb + hw + deb] properly mounted and secure not cracked, bent, or broken not missing any hardware free from debris" class="check-card">
+<input class="task-check" data-id="c33" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Steps [PMS + CBB + HW + DEB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Free from debris</li></ul>
+</span>
+</label>
+<label data-search="door [pms + wtf + cbb + od] properly mounted and secure opens and closes properly hinges are properly mounted and secure not worn, torn, or frayed seals on the door as well as the cab are properly mounted and secure seals on the door as well as the cab aren’t cracked, bent, or broken spare fuses are present in the driver side door pocket" class="check-card">
+<input class="task-check" data-id="c34" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Door [PMS + WTF + CBB + OD]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Opens and closes properly</li><li>Hinges are properly mounted and secure</li><li>Not worn, torn, or frayed</li><li>Seals on the door as well as the cab are properly mounted and secure</li><li>Seals on the door as well as the cab aren’t cracked, bent, or broken</li><li>Spare fuses are present in the driver side door pocket</li></ul>
+</span>
+</label>
+<label data-search="side compartment [pms + cbb + hw] 3 reflective triangles are properly mounted and secure not cracked, bent, or broken not missing any hardware fire extinguisher is properly mounted and secure fire extinguisher is not cracked, bent, or broken fire extinguisher is filled to the manufacturer’s specifications. i can tell by looking at the sight glass the pin is present on the fire extinguisher wheel chocks are present. use this opportunity to chock the wheels" class="check-card">
+<input class="task-check" data-id="c35" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Side Compartment [PMS + CBB + HW]</span>
+<ul class="script-lines"><li>3 reflective triangles are properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Fire extinguisher is properly mounted and secure</li><li>Fire extinguisher is not cracked, bent, or broken</li><li>Fire extinguisher is filled to the manufacturer’s specifications. I can tell by looking at the sight glass</li><li>The pin is present on the fire extinguisher</li><li>Wheel chocks are present. USE THIS OPPORTUNITY TO CHOCK THE WHEELS</li></ul>
+</span>
+</label>
+
+<label data-search="fuel tank [pms + cbd + nl + hw + cbb] properly mounted and secure not cracked, bent, or damaged not leaking not missing any hardware fuel cap is properly mounted and secure fuel cap is not cracked, broken, or damaged fuel cap is not leaking" class="check-card">
+<input class="task-check" data-id="c37" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Fuel tank [PMS + CBD + NL + HW + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or damaged</li><li>Not leaking</li><li>Not missing any hardware</li><li>Fuel cap is properly mounted and secure</li><li>Fuel cap is not cracked, broken, or damaged</li><li>Fuel cap is not leaking</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-8">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">8. IN-CAB / ENGINE START</span>
+<span class="section-meta"><span class="section-count">0/7</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="maintain 3-points of contact while entering [pms + wtf]" class="check-card">
+<input class="task-check" data-id="c38" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Maintain 3-points of contact while entering [PMS + WTF]</span>
+</span>
+</label>
+<label data-search="seat belt [pms + wtf + od] properly mounted and secure not worn, torn, or frayed no missing hardware latches / unlatches properly adjusted to me" class="check-card">
+<input class="task-check" data-id="c39" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Seat belt [PMS + WTF + OD]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not worn, torn, or frayed</li><li>No missing hardware</li><li>Latches / unlatches properly</li><li>Adjusted to me</li></ul>
+</span>
+</label>
+<label data-search="safe start [cc] engine on after safe start (manual only) fully depress clutch vehicle is in neutral both parking brakes are set / pulled out turn key to auxillary wait for abs light to go on/off clear to start the vehicle wait for air-pressure to build up in the primary and secondary gauges" class="check-card">
+<input class="task-check" data-id="c40" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Safe start [CC]</span><span class="state-badge state-on">ENGINE ON AFTER SAFE START</span>
+<ul class="script-lines"><li>(Manual only) Fully depress clutch</li><li>vehicle is in neutral</li><li>Both parking brakes are set / pulled out</li><li>Turn key to Auxillary</li><li>Wait for ABS light to go on/off</li><li>Clear to start the vehicle</li><li>Wait for air-pressure to build up in the primary and secondary gauges</li></ul>
+</span>
+</label>
+<label data-search="mirrors [pms + cc] properly mounted and secure not cracked or broken clean and clear adjusted to me free from illegal stickers" class="check-card">
+<input class="task-check" data-id="c41" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Mirrors [PMS + CC]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked or broken</li><li>Clean and clear</li><li>Adjusted to me</li><li>Free from illegal stickers</li></ul>
+</span>
+</label>
+<label data-search="windshield [pms + wtf + cc] properly mounted and secure not cracked or broken clean and clear free from illegal stickers weather stripping is properly mounted and secure weather stripping is not worn, torn, or frayed" class="check-card">
+<input class="task-check" data-id="c42" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Windshield [PMS + WTF + CC]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked or broken</li><li>Clean and clear</li><li>Free from illegal stickers</li><li>Weather stripping is properly mounted and secure</li><li>Weather stripping is not worn, torn, or frayed</li></ul>
+</span>
+</label>
+<label data-search="wipers [pms + hw + wtf + cc] properly mounted and secured not bent, cracked, or broken not missing any hardware properly resting on windshield [test wipers with fluid] wiper fluid sprays evenly across the windshield wiper blades themselves are not worn, torn, or frayed" class="check-card">
+<input class="task-check" data-id="c43" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Wipers [PMS + HW + WTF + CC]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not bent, cracked, or broken</li><li>Not missing any hardware</li><li>Properly resting on windshield</li><li>[Test wipers with fluid] Wiper fluid sprays evenly across the windshield</li><li>Wiper blades themselves are not worn, torn, or frayed</li></ul>
+</span>
+</label>
+<label data-search="gauges [cc] engine on after safe start oil pressure gauge will rise to manufacturer’s specification water temperature gauge will rise to manufacturer’s specification i have enough fuel for this test i have enough def for this test my air pressure should rise to between 85 - 100 psi within 45 seconds air pressure buildup will cut off between 120 and 140 psi" class="check-card">
+<input class="task-check" data-id="c44" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Gauges [CC]</span><span class="state-badge state-on">ENGINE ON AFTER SAFE START</span>
+<ul class="script-lines"><li>Oil pressure gauge will rise to manufacturer’s specification</li><li>Water temperature gauge will rise to manufacturer’s specification</li><li>I have enough fuel for this test</li><li>I have enough DEF for this test</li><li>My air pressure should rise to between 85 - 100 PSI within 45 seconds</li><li>Air pressure buildup will cut off between 120 and 140 PSI</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-9">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">9. IN-CAB CONTROLS</span>
+<span class="section-meta"><span class="section-count">0/1</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="controls [od] [turn on lights] verify running lights / brights are turned on by observing the indicator on the dash test right / left / hazard indicators test city horn test highway horn test heater and defrost independently" class="check-card">
+<input class="task-check" data-id="c45" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Controls [OD]</span>
+<ul class="script-lines"><li>[Turn on lights] Verify running lights / brights are turned on by observing the indicator on the dash</li><li>Test right / left / hazard indicators</li><li>Test city horn</li><li>Test highway horn</li><li>Test heater and defrost independently</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-10">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">10. AIR-BRAKE TEST</span>
+<span class="section-meta"><span class="section-count">0/11</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body"><div class="info-card" style="margin:10px 12px;background:#1c1c19;"><strong>Brake-test vehicle state:</strong> Build air with the engine running. For the applied-leakage, low-air-warning, and emergency/spring-brake pop-out tests, the engine is off with the key in ON/AUX. Restart before the tug and service-brake checks.</div>
+<label data-search="wait for air pressure to build up in primary / secondary gauges. release both parking brakes engine on" class="check-card">
+<input class="task-check" data-id="c46" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Wait for air pressure to build up in primary / secondary gauges. Release both parking brakes</span><span class="state-badge state-on">ENGINE ON</span>
+</span>
+</label>
+<label data-search="these tests are pass/fail - must verbally say which test you are doing and how you are doing it" class="check-card callout">
+<input class="task-check" data-id="c47" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">THESE TESTS ARE PASS/FAIL - Must verbally say which test you are doing and how you are doing it</span>
+</span>
+</label>
+<label data-search="applied brake test engine off • key on/aux fully apply the service brake wait for the air pressure to settle set timer for 60 seconds (1 minute) should lose no more than 4 psi in a combination vehicle while listening for leaks if the test passed: “we did not lose more than 4 psi in 1 minute - good test” if the test did not pass: you must explain why “heard an air leak” or “lost more than 4 psi”" class="check-card">
+<input class="task-check" data-id="c48" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Applied brake test</span><span class="state-badge state-off">ENGINE OFF • KEY ON/AUX</span>
+<ul class="script-lines"><li>Fully apply the service brake</li><li>Wait for the air pressure to settle</li><li>Set timer for 60 seconds (1 minute)</li><li>Should lose no more than 4 PSI in a combination vehicle while listening for leaks</li><li>If the test passed: “We did not lose more than 4 PSI in 1 minute - Good test”</li><li>If the test did not pass: You must explain why “Heard an air leak” or “Lost more than 4 PSI”</li></ul>
+</span>
+</label>
+<label data-search="low-air warning engine off • key on/aux i will fan my brake before my air pressure drops below 60 psi, my low air warning light and buzzer will come on “good test. light came on, and buzzer properly sounds before 60 psi” “bad test” - “why”" class="check-card">
+<input class="task-check" data-id="c49" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Low-air warning</span><span class="state-badge state-off">ENGINE OFF • KEY ON/AUX</span>
+<ul class="script-lines"><li>I will fan my brake</li><li>Before my air pressure drops below 60 PSI, my low air warning light and buzzer will come on</li><li>“Good test. Light came on, and buzzer properly sounds before 60 PSI”</li><li>“Bad test” - “why”</li></ul>
+</span>
+</label>
+<label data-search="emergency brake test engine off • key on/aux “i will continue to fan my brake, and at approximately 40 psi my air brake valves will pop out” “good test, they both popped out” “bad test” - “why”" class="check-card">
+<input class="task-check" data-id="c50" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Emergency Brake Test</span><span class="state-badge state-off">ENGINE OFF • KEY ON/AUX</span>
+<ul class="script-lines"><li>“I will continue to fan my brake, and at approximately 40 PSI my air brake valves will pop out”</li><li>“Good test, they both popped out”</li><li>“Bad test” - “Why”</li></ul>
+</span>
+</label>
+<label data-search="exit the vehicle remove key remove seat belt 3-points of contact remove the wheel chocks" class="check-card">
+<input class="task-check" data-id="c51" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Exit the vehicle</span>
+<ul class="script-lines"><li>Remove key</li><li>Remove seat belt</li><li>3-points of contact</li><li>Remove the wheel chocks</li></ul>
+</span>
+</label>
+<label data-search="get back in the vehicle 3-points of contact seat belt key in the ignition, and perform another safe start" class="check-card">
+<input class="task-check" data-id="c52" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Get back in the vehicle</span>
+<ul class="script-lines"><li>3-points of contact</li><li>Seat belt</li><li>Key in the ignition, and perform another safe start</li></ul>
+</span>
+</label>
+<label data-search="tractor brake test engine on clutch in put in gear push in the trailer brake only slowly let off the brake feel the tug “good test”" class="check-card">
+<input class="task-check" data-id="c53" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Tractor brake test</span><span class="state-badge state-on">ENGINE ON</span>
+<ul class="script-lines"><li>Clutch in</li><li>Put in gear</li><li>Push in the trailer brake only</li><li>Slowly let off the brake</li><li>Feel the tug</li><li>“Good test”</li></ul>
+</span>
+</label>
+<label data-search="trailer brake test engine on pull out the tractor brake pull out the trailer brake slowly let off the brake feel the tug “good test”" class="check-card">
+<input class="task-check" data-id="c54" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Trailer brake test</span><span class="state-badge state-on">ENGINE ON</span>
+<ul class="script-lines"><li>Pull out the tractor brake</li><li>Pull out the trailer brake</li><li>Slowly let off the brake</li><li>Feel the tug</li><li>“Good test”</li></ul>
+</span>
+</label>
+<label data-search="service brake test engine on drive forward at approximately 5 mph apply service brake slowly and evenly while holding my steering wheel properly and loosely when i apply the service brake, the steering wheel should not pull left or right which would indicate a possible steering or suspension problem release both brakes pull both brakes" class="check-card">
+<input class="task-check" data-id="c55" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Service brake test</span><span class="state-badge state-on">ENGINE ON</span>
+<ul class="script-lines"><li>Drive forward at approximately 5 mph</li><li>Apply service brake slowly and evenly while holding my steering wheel properly and loosely</li><li>When I apply the service brake, the steering wheel should not pull left or right which would indicate a possible steering or suspension problem</li><li>Release both brakes</li><li>Pull both brakes</li></ul>
+</span>
+</label>
+<label data-search="exit the vehicle remove key remove seatbelt 3-points of contact" class="check-card">
+<input class="task-check" data-id="c56" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Exit the vehicle</span>
+<ul class="script-lines"><li>Remove key</li><li>Remove seatbelt</li><li>3-Points of contact</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-11">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">11. REAR OF TRACTOR / DRIVE AXLES</span>
+<span class="section-meta"><span class="section-count">0/13</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="l-shaped reflective tape [pms + wtf + pc + cbb] properly mounted and secure not worn, torn, or frayed proper color - clear" class="check-card">
+<input class="task-check" data-id="c57" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">L-shaped reflective tape [PMS + WTF + PC + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not worn, torn, or frayed</li><li>Proper color - clear</li></ul>
+</span>
+</label>
+<label data-search="tractor electrical line [pms + wtf + sc + cbb] properly mounted and secure not worn, torn, or frayed no exposed wires/electrical tape that would indicate a repair securely coupled to my tractor" class="check-card">
+<input class="task-check" data-id="c58" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Tractor Electrical line [PMS + WTF + SC + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not worn, torn, or frayed</li><li>No exposed wires/electrical tape that would indicate a repair</li><li>Securely coupled to my tractor</li></ul>
+</span>
+</label>
+<label data-search="tractor air lines [pms + abc + nl + sc + cbb] properly mounted and secure no abrasions, bulges, or cuts not leaking securely coupled to my tractor" class="check-card">
+<input class="task-check" data-id="c59" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Tractor Air lines [PMS + ABC + NL + SC + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>No abrasions, bulges, or cuts</li><li>Not leaking</li><li>Securely coupled to my tractor</li></ul>
+</span>
+</label>
+<label data-search="trailer electrical line [pms + wtf + sc + cbb] properly mounted and secure not worn, torn, or frayed no exposed wires/electrical tape that would indicate a repair securely coupled to my trailer" class="check-card">
+<input class="task-check" data-id="c60" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Trailer electrical line [PMS + WTF + SC + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not worn, torn, or frayed</li><li>No exposed wires/electrical tape that would indicate a repair</li><li>Securely coupled to my trailer</li></ul>
+</span>
+</label>
+<label data-search="trailer air lines [pms + abc + nl + sc + cbb] properly mounted and secure no abrasions, bulges, or cuts not leaking securely coupled to my tractor" class="check-card">
+<input class="task-check" data-id="c61" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Trailer Air lines [PMS + ABC + NL + SC + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>No abrasions, bulges, or cuts</li><li>Not leaking</li><li>Securely coupled to my tractor</li></ul>
+</span>
+</label>
+<label data-search="steps / catwalk [pms + cbb + hw + deb] properly mounted and secure not cracked, bent, or broken not missing any hardware free from debris" class="check-card">
+<input class="task-check" data-id="c62" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Steps / Catwalk [PMS + CBB + HW + DEB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Free from debris</li></ul>
+</span>
+</label>
+<label data-search="frame and cross members [pms + cbb + hw + niw] properly mounted and secure not cracked, bent, or broken not missing any hardware free from illegal welds" class="check-card">
+<input class="task-check" data-id="c63" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Frame and cross members [PMS + CBB + HW + NIW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Free from illegal welds</li></ul>
+</span>
+</label>
+<label data-search="drive shaft / u-joints [pms + cbb + hw + deb + lm] properly mounted and secure not cracked, bent, or broken not missing any hardware free from debris" class="check-card">
+<input class="task-check" data-id="c64" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Drive shaft / U-Joints [PMS + CBB + HW + DEB + LM]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Free from debris</li></ul>
+</span>
+</label>
+<label data-search="torque rods &amp; torsion bars [pms + cbb + hw + bush] properly mounted and secure not cracked, bent, or broken not missing any hardware bushings are in place" class="check-card">
+<input class="task-check" data-id="c65" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Torque rods &amp; torsion bars [PMS + CBB + HW + BUSH]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Bushings are in place</li></ul>
+</span>
+</label>
+<label data-search="leaf spring hanger [pms + cbb + hw + bush] properly mounted and secure not cracked, bent, or broken not missing any hardware both front and rear bushings are in place" class="check-card">
+<input class="task-check" data-id="c66" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Leaf spring hanger [PMS + CBB + HW + BUSH]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Both front and rear bushings are in place</li></ul>
+</span>
+</label>
+<label data-search="leaf spring [pms + cbb + nl + hw] properly mounted and secured not cracked, bent, or broken not shifted, twisted, or scissored held on by 2 u-bolts not missing any hardware held on by 4 nuts on the bottom side" class="check-card">
+<input class="task-check" data-id="c67" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Leaf spring [PMS + CBB + NL + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Not shifted, twisted, or scissored</li><li>Held on by 2 U-bolts</li><li>Not missing any hardware</li><li>Held on by 4 nuts on the bottom side</li></ul>
+</span>
+</label>
+
+<label data-search="shock absorbers [pms + cbb + nl + hw + bush] properly mounted and secure, both top and bottom mounts not cracked, bent, or broken not missing any hardware not leaking bushings on both top and bottom are in place" class="check-card">
+<input class="task-check" data-id="c69" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Shock absorbers [PMS + CBB + NL + HW + BUSH]</span>
+<ul class="script-lines"><li>Properly mounted and secure, both top and bottom mounts</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Not leaking</li><li>Bushings on both top and bottom are in place</li></ul>
+</span>
+</label>
+<label data-search="air bag [pms + cbb + abc + nl + hw] properly mounted and secure not cracked, bent, or broken no abrasions, bulges, or cuts not missing any hardware not leaking" class="check-card">
+<input class="task-check" data-id="c70" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Air Bag [PMS + CBB + ABC + NL + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>No abrasions, bulges, or cuts</li><li>Not missing any hardware</li><li>Not leaking</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-12">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">12. DRIVE-AXLE BRAKES</span>
+<span class="section-meta"><span class="section-count">0/5</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="brake hoses [pms + abc + nl + hw] properly mounted and secure no abrasions, bulges, or cuts not missing any hardware not leaking" class="check-card">
+<input class="task-check" data-id="c71" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake hoses [PMS + ABC + NL + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>No abrasions, bulges, or cuts</li><li>Not missing any hardware</li><li>Not leaking</li></ul>
+</span>
+</label>
+<label data-search="brake chambers [pms + abc + nl + hw + ring + cbb] properly mounted and secure no abrasions, bulges, or cuts not missing any hardware not leaking ring is in place" class="check-card">
+<input class="task-check" data-id="c72" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake chambers [PMS + ABC + NL + HW + RING + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>No abrasions, bulges, or cuts</li><li>Not missing any hardware</li><li>Not leaking</li><li>Ring is in place</li></ul>
+</span>
+</label>
+<label data-search="push rod / slack adjusters [pms + cbb + hw + 1-in] properly mounted and secure not cracked, bent, or broken not missing any hardware when brakes are released and pulled by hand, it does not have more than 1-inch of play" class="check-card">
+<input class="task-check" data-id="c73" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Push rod / Slack adjusters [PMS + CBB + HW + 1-IN]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>When brakes are released and pulled by hand, it does not have more than 1-inch of play</li></ul>
+</span>
+</label>
+<label data-search="brake drums [pms + cbb + niw + deb + dry] properly mounted and secure not cracked, bent, or broken no illegal welds free from debris / contaminants" class="check-card">
+<input class="task-check" data-id="c74" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake drums [PMS + CBB + NIW + DEB + DRY]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>No illegal welds</li><li>Free from debris / contaminants</li></ul>
+</span>
+</label>
+<label data-search="brake linings [pms + cbb + deb + 1/4 + dry] properly mounted and secure not cracked, bent, or broken not missing not worn dangerously thin or less than ¼” free from debris / contaminants" class="check-card">
+<input class="task-check" data-id="c75" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake linings [PMS + CBB + DEB + 1/4 + DRY]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing</li><li>Not worn dangerously thin or less than ¼”</li><li>Free from debris / contaminants</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-13">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">13. DRIVE TIRES</span>
+<span class="section-meta"><span class="section-count">0/11</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="budd spacing [pms + deb] properly mounted and secure rims are touching tires are not touchingfree from debris" class="check-card">
+<input class="task-check" data-id="c76" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Budd spacing [PMS + DEB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Rims are touching</li><li>Tires are not touchingFree from debris</li></ul>
+</span>
+</label>
+<label data-search="tires (both on the same axle at the same time) [abc + even + 2/32 + sst + pi + ff] properly inflated to manufacturer’s specification. i know this because i checked with a tire pressure gauge at both valve stems inner, top, and outer portion of both of my tires have no abrasions, bulges, or cuts both worn evenly both the same size and type depth is no less than 2/32”" class="check-card">
+<input class="task-check" data-id="c77" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Tires (both on the same axle at the same time) [ABC + EVEN + 2/32 + SST + PI + FF]</span>
+<ul class="script-lines"><li>Properly inflated to manufacturer’s specification. I know this because I checked with a tire pressure gauge at both valve stems</li><li>Inner, top, and outer portion of both of my tires have no abrasions, bulges, or cuts</li><li>Both worn evenly</li><li>Both the same size and type</li><li>Depth is no less than 2/32”</li></ul>
+</span>
+</label>
+<label data-search="valve stems [pms + cbb + nl + hw + cap] properly mounted and secure not cracked, bent, or broken not missing any hardware caps are in place and not leaking" class="check-card">
+<input class="task-check" data-id="c78" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Valve stems [PMS + CBB + NL + HW + CAP]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Caps are in place and not leaking</li></ul>
+</span>
+</label>
+<label data-search="rims [pms + cbb + hw + niw + ndw] properly mounted and secure not cracked, bent, or broken not missing any hardware free from illegal welds" class="check-card">
+<input class="task-check" data-id="c79" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Rims [PMS + CBB + HW + NIW + NDW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Free from illegal welds</li></ul>
+</span>
+</label>
+<label data-search="lug nuts [pms + cbb + lm + nr] properly mounted and secure not cracked, bent, or broken none are missing free from rust or metal shavings which would indicate loose or over-tightened" class="check-card">
+<input class="task-check" data-id="c80" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Lug nuts [PMS + CBB + LM + NR]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>None are missing</li><li>Free from rust or metal shavings which would indicate loose or over-tightened</li></ul>
+</span>
+</label>
+<label data-search="axle seals [pms + cbb + nl + hw + mfs] properly mounted and secured not cracked, bent, or broken not missing any hardware filled to manufacturer’s specification not leaking" class="check-card">
+<input class="task-check" data-id="c81" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Axle seals [PMS + CBB + NL + HW + MFS]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Filled to manufacturer’s specification</li><li>Not leaking</li></ul>
+</span>
+</label>
+<label data-search="“how would you inspect this set of tires” for the second set of drive tires. you would say “the same as the first”" class="check-card callout">
+<input class="task-check" data-id="c82" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">“How would you inspect this set of tires” for the second set of drive tires. You would say “The same as the first”</span>
+</span>
+</label>
+<label data-search="mud flap / splash guard [pms + cbb + hw + ndg + cov] properly mounted and secured not cracked, bent, or broken not missing any hardware not dragging on the ground covers both tires" class="check-card">
+<input class="task-check" data-id="c83" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Mud Flap / Splash Guard [PMS + CBB + HW + NDG + COV]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Not dragging on the ground</li><li>Covers both tires</li></ul>
+</span>
+</label>
+<label data-search="dot reflective tape [pms + wtf + pc] properly mounted and secured not worn, torn, or frayed proper color - red and clear" class="check-card">
+<input class="task-check" data-id="c84" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">DOT Reflective Tape [PMS + WTF + PC]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not worn, torn, or frayed</li><li>Proper color - Red and clear</li></ul>
+</span>
+</label>
+<label data-search="rear tractor lights — four-way, indicator, brake, running lights [pms + cbb + pc + fcl] properly mounted and secured not cracked, bent, or broken proper color which is red will check the function later" class="check-card">
+<input class="task-check" data-id="c85-red" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Rear tractor lights — Four-way, indicator, brake, running lights [PMS + CBB + PC + FCL]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Proper color which is red</li><li>Will check the function later</li></ul>
+</span>
+</label>
+<label data-search="rear tractor lights — reverse lights [pms + cbb + pc + fcl] properly mounted and secured not cracked, bent, or broken proper color which is clear will check the function later" class="check-card">
+<input class="task-check" data-id="c85-reverse" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Rear tractor lights — Reverse lights [PMS + CBB + PC + FCL]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Proper color which is clear</li><li>Will check the function later</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-14">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">14. FRONT OF TRAILER</span>
+<span class="section-meta"><span class="section-count">0/5</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="bulkhead [pms + cbb + hw] properly mounted and secure not cracked, bent, or broken not missing any hardware (necessary?) all rivets are in place (necessary?) free from any holes strong enough to hold my load" class="check-card">
+<input class="task-check" data-id="c86" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Bulkhead [PMS + CBB + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>(necessary?) All rivets are in place</li><li>(necessary?) Free from any holes</li><li>Strong enough to hold my load</li></ul>
+</span>
+</label>
+<label data-search="clearance light [pms + cbb + hw + pc + fcl + cc + od] properly mounted and secured not cracked, bent, or broken not missing any hardware proper color - amber will check the function later" class="check-card">
+<input class="task-check" data-id="c87" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Clearance light [PMS + CBB + HW + PC + FCL + CC + OD]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Proper color - Amber</li><li>Will check the function later</li></ul>
+</span>
+</label>
+<label data-search="front side marker light [pms + cbb + hw + pc + fcl + cc + od] properly mounted and secured not cracked, bent, or broken not missing any hardware proper color - amber (or is it clear?) will check the function later" class="check-card">
+<input class="task-check" data-id="c88" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Front Side Marker light [PMS + CBB + HW + PC + FCL + CC + OD]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Proper color - Amber (or is it Clear?)</li><li>Will check the function later</li></ul>
+</span>
+</label>
+<label data-search="front side reflector [pms + cbb + hw + pc + cc + od] properly mounted and secured not cracked, bent, or broken not missing any hardware proper color - amber" class="check-card">
+<input class="task-check" data-id="c89" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Front side reflector [PMS + CBB + HW + PC + CC + OD]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Proper color - Amber</li></ul>
+</span>
+</label>
+<label data-search="dot reflective tape - side of truck [pms + wtf + pc + cbb + cc + od] extends down the whole side of the trailer properly mounted and secured not worn, torn, or frayed proper color - clear and red" class="check-card">
+<input class="task-check" data-id="c90" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">DOT Reflective tape - side of truck [PMS + WTF + PC + CBB + CC + OD]</span>
+<ul class="script-lines"><li>Extends down the whole side of the trailer</li><li>Properly mounted and secured</li><li>Not worn, torn, or frayed</li><li>Proper color - clear and red</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-15">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">15. COUPLING SYSTEM</span>
+<span class="section-meta"><span class="section-count">0/9</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="apron [pms + cbb + hw + ff + no gap] properly mounted and secured not cracked, bent, or broken not missing and hardware free from foreign holes" class="check-card">
+<input class="task-check" data-id="c91" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Apron [PMS + CBB + HW + FF + NO GAP]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Not missing and hardware</li><li>Free from foreign holes</li></ul>
+</span>
+</label>
+<label data-search="skid plate [pms + cbb + hw + gr + ng] properly mounted and secure not cracked, bent, or broken not missing any hardware properly greased no gap between skid plate &amp; apron" class="check-card">
+<input class="task-check" data-id="c92" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Skid plate [PMS + CBB + HW + GR + NG]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Properly greased</li><li>No gap between skid plate &amp; apron</li></ul>
+</span>
+</label>
+<label data-search="platform mounting base [pms + cbb + hw] properly mounted and secure not cracked, bent, or broken not missing and hardware" class="check-card">
+<input class="task-check" data-id="c93" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Platform mounting base [PMS + CBB + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing and hardware</li></ul>
+</span>
+</label>
+<label data-search="sliding rail [pms + cbb + hw + lock + locked] properly mounted and secured not cracked, bent, or broken not missing and hardware pins are in the locked position" class="check-card">
+<input class="task-check" data-id="c94" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Sliding Rail [PMS + CBB + HW + LOCK + LOCKED]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Not missing and hardware</li><li>Pins are in the locked position</li></ul>
+</span>
+</label>
+<label data-search="fifth-wheel mounting bolts [pms + cbb + hw + lm] properly mounted and secure not cracked, bent, or broken not missing any hardware" class="check-card">
+<input class="task-check" data-id="c95" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Fifth-wheel mounting bolts [PMS + CBB + HW + LM]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li></ul>
+</span>
+</label>
+<label data-search="release arm [pms + cbb + hw + lock] properly mounted and secure not cracked, bent, or broken not missing any hardware in the locked position" class="check-card">
+<input class="task-check" data-id="c96" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Release arm [PMS + CBB + HW + LOCK]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>In the LOCKED position</li></ul>
+</span>
+</label>
+<label data-search="air line [pms + abc + nl] properly mounted and secure no abrasions, bulges, or cuts not leaking" class="check-card">
+<input class="task-check" data-id="c97" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Air line [PMS + ABC + NL]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>No abrasions, bulges, or cuts</li><li>Not leaking</li></ul>
+</span>
+</label>
+<label data-search="kingpin [pms + cbb] properly mounted and secure not cracked, bent, or broken locking jaws are securely around the shank of the kingpin" class="check-card">
+<input class="task-check" data-id="c98" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Kingpin [PMS + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Locking jaws are securely around the shank of the kingpin</li></ul>
+</span>
+</label>
+<label data-search="clearance there is sufficient clearance between tractor and trailer for turns and sufficient clearance between the landing gear and rear of the tractor to make tight turns safely." class="check-card">
+<input class="task-check" data-id="c99" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Clearance</span>
+<ul class="script-lines"><li>There is sufficient clearance between tractor and trailer for turns and sufficient clearance between the landing gear and rear of the tractor to make tight turns safely.</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-16">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">16. TRAILER SIDE</span>
+<span class="section-meta"><span class="section-count">0/5</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="crossmembers [pms + cbb + hw] properly mounted and secured not cracked, bent, or broken not missing any hardware floor does not have any holes" class="check-card">
+<input class="task-check" data-id="c100" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Crossmembers [PMS + CBB + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Floor does not have any holes</li></ul>
+</span>
+</label>
+<label data-search="landing gear [pms + cbb + hw] properly mounted and secure not cracked, bent, or broken not missing any hardware" class="check-card">
+<input class="task-check" data-id="c101" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Landing Gear [PMS + CBB + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li></ul>
+</span>
+</label>
+<label data-search="landing gear feet [pms + cbb + hw] properly mounted and secure not cracked, bent, or broken landing gear feet are fully raised not missing any hardware" class="check-card">
+<input class="task-check" data-id="c102" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Landing Gear Feet [PMS + CBB + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Landing gear feet are fully raised</li><li>Not missing any hardware</li></ul>
+</span>
+</label>
+<label data-search="landing gear crank handle [pms + cbb + hw] properly mounted and secure not cracked, bent, or broken not missing any hardware secured in the stowed away position" class="check-card">
+<input class="task-check" data-id="c103" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Landing Gear Crank Handle [PMS + CBB + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Secured in the STOWED AWAY position</li></ul>
+</span>
+</label>
+<label data-search="indicator / four-way / running / reflector light [pms + cbb + hw + fcl] properly mounted and secure not cracked, bent, or broken not missing any hardware will check the function later" class="check-card">
+<input class="task-check" data-id="c104" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Indicator / Four-way / Running / Reflector Light [PMS + CBB + HW + FCL]</span>
+<ul class="script-lines"><li>Properly Mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Will check the function later</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-17">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">17. TRAILER TANDEM / SUSPENSION</span>
+<span class="section-meta"><span class="section-count">0/6</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="sliding tandem rail [pms + cbb + hw + lock + locked] properly mounted and secure not cracked, bent, or broken not missing any hardware ping are in the locked position" class="check-card">
+<input class="task-check" data-id="c105" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Sliding Tandem Rail [PMS + CBB + HW + LOCK + LOCKED]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Ping are in the LOCKED position</li></ul>
+</span>
+</label>
+<label data-search="release arm [pms + cbb + hw + lock] properly mounted and secure not cracked, bent, or broken not missing any hardware in the locked position" class="check-card">
+<input class="task-check" data-id="c106" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Release Arm [PMS + CBB + HW + LOCK]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>In the LOCKED position</li></ul>
+</span>
+</label>
+<label data-search="control arm hangers [pms + cbb + hw + bush] properly mounted and secure not cracked, bent, or broken not missing any hardware bushings are in place" class="check-card">
+<input class="task-check" data-id="c107" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Control Arm Hangers [PMS + CBB + HW + BUSH]</span>
+<ul class="script-lines"><li>Properly Mounted and Secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Bushings are in place</li></ul>
+</span>
+</label>
+<label data-search="control arm [pms + cbb + hw] properly mounted and secure not cracked, bent, or broken not missing any hardware" class="check-card">
+<input class="task-check" data-id="c108" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Control Arm [PMS + CBB + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li></ul>
+</span>
+</label>
+<label data-search="shock absorber [pms + cbb + nl + hw + bush] properly mounted and secured not cracked, bent, or broken not missing and hardware both top and bottom mounts &amp; bushings are in place not leaking" class="check-card">
+<input class="task-check" data-id="c109" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Shock absorber [PMS + CBB + NL + HW + BUSH]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>Not cracked, bent, or broken</li><li>Not missing and hardware</li><li>Both top and bottom mounts &amp; bushings are in place</li><li>Not leaking</li></ul>
+</span>
+</label>
+<label data-search="airbag [pms + abc + nl + hw] properly mounted and secured no abrasions, bulges, or cuts not missing and hardware not leaking" class="check-card">
+<input class="task-check" data-id="c110" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Airbag [PMS + ABC + NL + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secured</li><li>No abrasions, bulges, or cuts</li><li>Not missing and hardware</li><li>Not leaking</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-18">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">18. TRAILER BRAKES</span>
+<span class="section-meta"><span class="section-count">0/7</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="must do this from memory, without pointing. since you may not go under the trailer while conducting the test." class="check-card callout">
+<input class="task-check" data-id="c111" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Must do this from memory, without pointing. Since you may not go under the trailer while conducting the test.</span>
+</span>
+</label>
+<label data-search="brake hoses [pms + abc + nl + hw] properly mounted and secure no abrasions, bulges, or cuts not missing and hardware not leaking" class="check-card">
+<input class="task-check" data-id="c112" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake hoses [PMS + ABC + NL + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>No abrasions, bulges, or cuts</li><li>Not missing and hardware</li><li>Not leaking</li></ul>
+</span>
+</label>
+<label data-search="brake chambers [pms + nl + hw + cbb] properly mounted and secure not bent, cracked, or broken not missing any hardware not leaking when the rig is in place" class="check-card">
+<input class="task-check" data-id="c113" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake chambers [PMS + NL + HW + CBB]</span>
+<ul class="script-lines"><li>Properly Mounted and secure</li><li>Not bent, cracked, or broken</li><li>Not missing any hardware</li><li>Not leaking when the rig is in place</li></ul>
+</span>
+</label>
+<label data-search="push rod / slack adjusters [pms + hw + 1-in + cbb] properly mounted and secure not bent, cracked, or broken not missing any hardware when brakes are released, and pulled by hand, it has no more than 1-inch of play" class="check-card">
+<input class="task-check" data-id="c114" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Push rod / Slack adjusters [PMS + HW + 1-IN + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not bent, cracked, or broken</li><li>Not missing any hardware</li><li>When brakes are released, and pulled by hand, it has no more than 1-inch of play</li></ul>
+</span>
+</label>
+<label data-search="brake drums [pms + hw + niw + deb + cbb + dry] properly mounted and secure not bent, cracked, or broken not missing any hardware free from illegal welds free from debris" class="check-card">
+<input class="task-check" data-id="c115" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake Drums [PMS + HW + NIW + DEB + CBB + DRY]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not bent, cracked, or broken</li><li>Not missing any hardware</li><li>Free from illegal welds</li><li>Free from debris</li></ul>
+</span>
+</label>
+<label data-search="brake linings [pms + hw + deb + 1/4 + cbb + dry] properly mounted and secure not bent, cracked, or broken not missing any hardware not worn dangerously thin (or less that ¼”) free from debris" class="check-card">
+<input class="task-check" data-id="c116" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Brake Linings [PMS + HW + DEB + 1/4 + CBB + DRY]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not bent, cracked, or broken</li><li>Not missing any hardware</li><li>Not worn dangerously thin (or less that ¼”)</li><li>Free from debris</li></ul>
+</span>
+</label>
+<label data-search="budd spacing [pms + deb] properly mounted and secure rims are touching tires are not touching free from debris" class="check-card">
+<input class="task-check" data-id="c117" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Budd spacing [PMS + DEB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Rims are touching</li><li>Tires are not touching</li><li>Free from debris</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-19">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">19. TRAILER TIRES AND WHEELS</span>
+<span class="section-meta"><span class="section-count">0/7</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="tires [abc + even + 2/32 + pi + ff] inflated to manufacturer’s specifications. i know this because i checked with a tire pressure gauge at the valve stems no abrasions, bulges, or cuts worn evenly no less than 2/32” of tread depth" class="check-card">
+<input class="task-check" data-id="c118" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Tires [ABC + EVEN + 2/32 + PI + FF]</span>
+<ul class="script-lines"><li>Inflated to manufacturer’s specifications. I know this because I checked with a tire pressure gauge at the valve stems</li><li>No abrasions, bulges, or cuts</li><li>Worn evenly</li><li>No less than 2/32” of tread depth</li></ul>
+</span>
+</label>
+<label data-search="valve stem [pms + nl + hw] properly mounted and secure not bent, cracked, or broken not missing any hardware cap is properly in place not leaking" class="check-card">
+<input class="task-check" data-id="c119" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Valve Stem [PMS + NL + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not bent, cracked, or broken</li><li>Not missing any hardware</li><li>Cap is properly in place</li><li>Not leaking</li></ul>
+</span>
+</label>
+<label data-search="rims [pms + niw + cbb + ndw] properly mounted and secure not bent, cracked, or broken free from illegal welds" class="check-card">
+<input class="task-check" data-id="c120" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Rims [PMS + NIW + CBB + NDW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not bent, cracked, or broken</li><li>Free from illegal welds</li></ul>
+</span>
+</label>
+<label data-search="lug nuts [pms + lm + nr] properly mounted and secure not bent, cracked, or broken not missing any no rust or metal shavings that would indicate loose or over-tightened lug nuts" class="check-card">
+<input class="task-check" data-id="c121" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Lug nuts [PMS + LM + NR]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not bent, cracked, or broken</li><li>Not missing any</li><li>No rust or metal shavings that would indicate loose or over-tightened lug nuts</li></ul>
+</span>
+</label>
+<label data-search="hub seals [pms + nl + hw + mfs] properly mounted and secure not bent, cracked, or broken not missing any hardware filled to manufacturer’s specifications not leaking" class="check-card">
+<input class="task-check" data-id="c122" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">HUB seals [PMS + NL + HW + MFS]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not bent, cracked, or broken</li><li>Not missing any hardware</li><li>Filled to manufacturer’s specifications</li><li>Not leaking</li></ul>
+</span>
+</label>
+<label data-search="same thing for the rear tandem wheels [pms + hw + ndg + cov]" class="check-card">
+<input class="task-check" data-id="c123" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Same thing for the rear tandem wheels [PMS + HW + NDG + COV]</span>
+</span>
+</label>
+<label data-search="mud flaps [pms + hw + ndg + cov] properly mounted and secure not bent, cracked, or broken not missing any hardware not dragging on the ground covers both tires" class="check-card">
+<input class="task-check" data-id="c124" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Mud flaps [PMS + HW + NDG + COV]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not bent, cracked, or broken</li><li>Not missing any hardware</li><li>Not dragging on the ground</li><li>Covers both tires</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-20">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">20. REAR SIDE OF TRAILER</span>
+<span class="section-meta"><span class="section-count">0/3</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="door tie [pms + hw] properly mounted and secure not bent, cracked, or broken not missing any hardware" class="check-card">
+<input class="task-check" data-id="c125" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Door tie [PMS + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not bent, cracked, or broken</li><li>Not missing any hardware</li></ul>
+</span>
+</label>
+<label data-search="abs light [pms + hw + pc] properly mounted and secure not bent, cracked, or broken not missing any hardware proper color - amber" class="check-card">
+<input class="task-check" data-id="c126" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">ABS Light [PMS + HW + PC]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not bent, cracked, or broken</li><li>Not missing any hardware</li><li>Proper color - Amber</li></ul>
+</span>
+</label>
+<label data-search="side marker light [pms + hw + pc] properly mounted and secure not bent, cracked, or broken not missing any hardware proper color - red" class="check-card">
+<input class="task-check" data-id="c127" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Side marker Light [PMS + HW + PC]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not bent, cracked, or broken</li><li>Not missing any hardware</li><li>Proper color - Red</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-21">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">21. REAR OF TRAILER</span>
+<span class="section-meta"><span class="section-count">0/9</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="3 id lights [pms + cbb + hw + pc + fcl] properly mounted and secure not cracked, bent, or broken not missing any hardware proper color - red will check the function later" class="check-card">
+<input class="task-check" data-id="c128" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">3 ID Lights [PMS + CBB + HW + PC + FCL]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Proper color - red</li><li>Will check the function later</li></ul>
+</span>
+</label>
+<label data-search="clearance lights (if equipped) [pms + cbb + hw + pc + fcl] properly mounted and secure not cracked, bent, or broken not missing any hardware proper color - red will check the function later" class="check-card">
+<input class="task-check" data-id="c129" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Clearance lights (If equipped) [PMS + CBB + HW + PC + FCL]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Proper color - red</li><li>Will check the function later</li></ul>
+</span>
+</label>
+<label data-search="l-shaped reflective tape [pms + wtf + pc] properly mounted and secure not worn, torn, or frayed proper color - clear" class="check-card">
+<input class="task-check" data-id="c130" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">L-Shaped reflective tape [PMS + WTF + PC]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not worn, torn, or frayed</li><li>Proper color - clear</li></ul>
+</span>
+</label>
+<label data-search="door hinges [pms + cbb + hw] properly mounted and secure not cracked, bent, or broken not missing any hardware" class="check-card">
+<input class="task-check" data-id="c131" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Door Hinges [PMS + CBB + HW]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li></ul>
+</span>
+</label>
+<label data-search="door seal [pms + wtf + cbb] properly mounted and secure not worn, torn, or frayed" class="check-card">
+<input class="task-check" data-id="c132" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Door seal [PMS + WTF + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not worn, torn, or frayed</li></ul>
+</span>
+</label>
+<label data-search="door latch [pms + cbb] properly mounted and secure not cracked, bent, or broken" class="check-card">
+<input class="task-check" data-id="c133" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Door Latch [PMS + CBB]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li></ul>
+</span>
+</label>
+<label data-search="dot reflective tape [pms + wtf + pc] properly mounted and secure not worn, torn, or frayed proper color - clear and red" class="check-card">
+<input class="task-check" data-id="c134" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">DOT Reflective tape [PMS + WTF + PC]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not worn, torn, or frayed</li><li>Proper color - Clear and red</li></ul>
+</span>
+</label>
+<label data-search="4-way, indicator, running lights [pms + cbb + hw + pc + fcl + cc + od] properly mounted and secure not cracked, bent, or broken. not missing any hardware proper color - red will check the function later" class="check-card">
+<input class="task-check" data-id="c135" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">4-way, indicator, running Lights [PMS + CBB + HW + PC + FCL + CC + OD]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken.</li><li>Not missing any hardware</li><li>Proper color - Red</li><li>Will check the function later</li></ul>
+</span>
+</label>
+<label data-search="running &amp; brake lights [pms + cbb + hw + pc + fcl] properly mounted and secure not cracked, bent, or broken not missing any hardware proper color - red will check the function later" class="check-card">
+<input class="task-check" data-id="c136" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Running &amp; brake lights [PMS + CBB + HW + PC + FCL]</span>
+<ul class="script-lines"><li>Properly mounted and secure</li><li>Not cracked, bent, or broken</li><li>Not missing any hardware</li><li>Proper color - Red</li><li>Will check the function later</li></ul>
+</span>
+</label>
+</div>
+</section>
+<section class="inspection-section" id="section-22">
+<button aria-expanded="true" class="section-toggle" type="button">
+<span class="section-title">22. Trailer light check</span>
+<span class="section-meta"><span class="section-count">0/1</span><span class="chev">⌄</span></span>
+</button>
+<div class="section-body">
+<label data-search="exam reminder: use the acronym only as your internal prompt. speak the complete inspection phrase to the examiner and physically point to or touch the component when appropriate." class="check-card callout">
+<input class="task-check" data-id="c137" type="checkbox"/>
+<span aria-hidden="true" class="box"></span>
+<span class="card-body">
+<span class="component-title">Exam reminder: Use the acronym only as your internal prompt. Speak the complete inspection phrase to the examiner and physically point to or touch the component when appropriate.</span>
+</span>
+</label>
+</div>
+</section>
+<p class="empty-state" id="emptyState" role="status" hidden>No checks match your search.</p>
+<div class="footer-note">Progress is saved automatically on this device/browser.</div>
+</main>
+<script>
+(() => {
+  const STORE = "cmv_school_pretrip_cleaned_v3";
+  const boxes = [...document.querySelectorAll(".task-check")];
+  const sections = [...document.querySelectorAll(".inspection-section")];
+  const search = document.getElementById("search");
+  const doneCount = document.getElementById("doneCount");
+  const pct = document.getElementById("pct");
+  const progressFill = document.getElementById("progressFill");
+
+  function save() {
+    const checked = boxes.filter(b => b.checked).map(b => b.dataset.id);
+    try { localStorage.setItem(STORE, JSON.stringify([...checked, "structure-updated"])); } catch(e) {
+      document.querySelector(".footer-note").textContent = "Progress cannot be saved in this browser. Keep this page open to retain your checks.";
+    }
+  }
+
+  function load() {
+    let checked = [];
+    try { checked = JSON.parse(localStorage.getItem(STORE) || "[]"); } catch(e) {}
+    if (!Array.isArray(checked)) checked = [];
+    const merged = {c6: ["c5", "c6"], c9: ["c9", "c10"], c35: ["c35", "c36"], c67: ["c67", "c68"]};
+    const legacy = !checked.includes("structure-updated");
+    boxes.forEach(b => {
+      const id = b.dataset.id;
+      if (legacy && merged[id]) b.checked = merged[id].every(old => checked.includes(old));
+      else if (id.startsWith("c2-")) b.checked = checked.includes(id) || checked.includes("c2");
+      else if (id.startsWith("c85-")) b.checked = checked.includes(id) || checked.includes("c85");
+      else b.checked = checked.includes(id);
+    });
+    update();
+  }
+
+  function update() {
+    const done = boxes.filter(b => b.checked).length;
+    const percent = boxes.length ? Math.round(done / boxes.length * 100) : 0;
+    doneCount.textContent = done;
+    document.getElementById("totalCount").textContent = boxes.length;
+    pct.textContent = percent + "%";
+    progressFill.style.width = percent + "%";
+
+    sections.forEach(sec => {
+      const bs = [...sec.querySelectorAll(".task-check")];
+      const count = bs.filter(b => b.checked).length;
+      sec.querySelector(".section-count").textContent = count + "/" + bs.length;
+    });
+  }
+
+  boxes.forEach(b => b.addEventListener("change", () => { save(); update(); }));
+
+  document.querySelectorAll(".section-toggle").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const sec = btn.closest(".inspection-section");
+      sec.classList.toggle("collapsed");
+      btn.setAttribute("aria-expanded", String(!sec.classList.contains("collapsed")));
+      syncCollapseButton();
+    });
+  });
+
+  function syncCollapseButton() {
+    document.getElementById("collapseAll").textContent = sections.every(sec => sec.classList.contains("collapsed")) ? "Expand all" : "Collapse all";
+  }
+  document.getElementById("collapseAll").addEventListener("click", e => {
+    const allCollapsed = !sections.every(sec => sec.classList.contains("collapsed"));
+    sections.forEach(sec => sec.classList.toggle("collapsed", allCollapsed));
+    document.querySelectorAll(".section-toggle").forEach(btn => btn.setAttribute("aria-expanded", String(!allCollapsed)));
+    e.currentTarget.textContent = allCollapsed ? "Expand all" : "Collapse all";
+  });
+
+  document.getElementById("reset").addEventListener("click", () => {
+    if (!confirm("Clear every checklist mark?")) return;
+    boxes.forEach(b => b.checked = false);
+    save(); update();
+  });
+
+  search.addEventListener("input", () => {
+    const q = search.value.trim().toLowerCase();
+    sections.forEach(sec => {
+      let any = false;
+      sec.querySelectorAll(".check-card").forEach(card => {
+        const match = !q || card.dataset.search.includes(q);
+        card.classList.toggle("hidden", !match);
+        if (match) any = true;
+      });
+      sec.classList.toggle("hidden", !any);
+      if (q && any) sec.classList.remove("collapsed");
+      sec.querySelector(".section-toggle").setAttribute("aria-expanded", String(!sec.classList.contains("collapsed")));
+    });
+  });
+
+  const header = document.querySelector(".app-header");
+  const headerToggle = document.getElementById("headerToggle");
+  const headerDetails = document.getElementById("headerDetails");
+  function setHeaderCollapsed(collapsed) {
+    header.classList.toggle("is-collapsed", collapsed);
+    headerDetails.hidden = collapsed;
+    headerToggle.setAttribute("aria-expanded", String(!collapsed));
+    headerToggle.setAttribute("aria-label", (collapsed ? "Expand" : "Collapse") + " header controls");
+  }
+  setHeaderCollapsed(window.matchMedia("(max-width: 650px)").matches);
+  headerToggle.addEventListener("click", () => setHeaderCollapsed(!headerDetails.hidden));
+  search.addEventListener("input", () => {
+    syncCollapseButton();
+    document.getElementById("emptyState").hidden = sections.some(sec => !sec.classList.contains("hidden"));
+  });
+  load();
+})();
+</script>
+</body>
+</html>
