@@ -1949,6 +1949,18 @@ main{padding-top:22px}
 
   boxes.forEach(b => b.addEventListener("change", () => { save(); update(); }));
 
+  function scrollOpenedIntoView(element) {
+    // Measure after collapsing the previous section and expanding the new content.
+    requestAnimationFrame(() => {
+      const headerHeight = document.querySelector(".app-header").getBoundingClientRect().height;
+      const top = element.getBoundingClientRect().top + window.scrollY - headerHeight - 12;
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"
+      });
+    });
+  }
+
   function setOpenSection(openSection) {
     sections.forEach(sec => {
       const open = sec === openSection;
@@ -1961,7 +1973,9 @@ main{padding-top:22px}
   document.querySelectorAll(".section-toggle").forEach(btn => {
     btn.addEventListener("click", () => {
       const sec = btn.closest(".inspection-section");
-      setOpenSection(sec.classList.contains("collapsed") ? sec : null);
+      const opening = sec.classList.contains("collapsed");
+      setOpenSection(opening ? sec : null);
+      if (opening) scrollOpenedIntoView(sec);
     });
   });
 
@@ -2074,6 +2088,7 @@ main{padding-top:22px}
       toggle.textContent = details.hidden ? "Show" : "Hide";
       toggle.setAttribute("aria-expanded", String(!details.hidden));
       toggle.setAttribute("aria-label", `${details.hidden ? "Show" : "Hide"} details for ${context.title}`);
+      if (!details.hidden) scrollOpenedIntoView(context.card);
     });
     details.append(preview, button);
     Object.assign(context, {button, preview});
