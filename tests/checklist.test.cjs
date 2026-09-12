@@ -106,3 +106,26 @@ test('Reset actions affect only their own saved data and honor cancellation',()=
   assert.deepEqual(a.errors,[]);a.close();
  }
 });
+test('Opening check details closes the previous check within and across sections',()=>{
+ for(const mobile of [true,false]){
+  const a=app(mobile),{d}=a;
+  const card=id=>d.querySelector(`[data-id="${id}"]`).closest('.check-card');
+  const click=id=>card(id).querySelector('.details-toggle').click();
+  for(const id of ['c1','c2-id','c3','c1']){
+   click(id);
+   assert.equal(d.querySelectorAll('.check-details:not([hidden])').length,1);
+   assert.equal(d.querySelectorAll('.details-toggle[aria-expanded="true"]').length,1);
+   assert(!card(id).querySelector('.check-details').hidden);
+   for(const other of d.querySelectorAll('.check-card')){
+    const toggle=other.querySelector('.details-toggle'),open=other===card(id);
+    assert.equal(toggle.title,open?'Hide inspection bullets':'Show inspection bullets');
+    assert(toggle.getAttribute('aria-label').startsWith(open?'Hide details':'Show details'));
+   }
+  }
+  const scrollCount=a.scrolls.length;
+  click('c1');assert.equal(d.querySelectorAll('.check-details:not([hidden])').length,0);
+  assert.equal(a.scrolls.length,scrollCount);
+  assert.equal(d.getElementById('doneCount').textContent,'0');
+  assert.deepEqual(a.errors,[]);a.close();
+ }
+});

@@ -2163,11 +2163,17 @@ main{padding-top:22px}
     const details = context.card.querySelector(".check-details");
     const toggle = context.card.querySelector(".details-toggle");
     toggle.addEventListener("click", () => {
-      details.hidden = !details.hidden;
-      toggle.title = details.hidden ? "Show inspection bullets" : "Hide inspection bullets";
-      toggle.setAttribute("aria-expanded", String(!details.hidden));
-      toggle.setAttribute("aria-label", `${details.hidden ? "Show" : "Hide"} details for ${context.title}`);
-      if (!details.hidden) scrollOpenedIntoView(context.card);
+      const opening = details.hidden;
+      checkContext.forEach(other => {
+        const otherDetails = other.card.querySelector(".check-details");
+        const otherToggle = other.card.querySelector(".details-toggle");
+        const open = other === context && opening;
+        otherDetails.hidden = !open;
+        otherToggle.title = open ? "Hide inspection bullets" : "Show inspection bullets";
+        otherToggle.setAttribute("aria-expanded", String(open));
+        otherToggle.setAttribute("aria-label", `${open ? "Hide" : "Show"} details for ${other.title}`);
+      });
+      if (opening) scrollOpenedIntoView(context.card);
     });
     details.append(preview, button);
     Object.assign(context, {button, preview});
