@@ -30,7 +30,7 @@ test('Bullet icons, notes, search, accordion and scroll continue working on mobi
   card.querySelector('.task-check').click();assert.equal($('doneCount').textContent,'1');
   $('section-2').querySelector('.section-toggle').click();assert.equal(d.querySelectorAll('.inspection-section:not(.collapsed)').length,1);
   $('search').value='volt meter';$('search').dispatchEvent(new w.Event('input'));assert.equal(d.querySelectorAll('.inspection-section:not(.collapsed)').length,1);assert(!d.querySelector('[data-id="c44"]').closest('.check-card').classList.contains('hidden'));
-  $('reset').click();assert.equal($('doneCount').textContent,'0');assert.equal($('exportNotes').textContent,'Export notes (0)');assert.deepEqual(a.errors,[]);a.close();
+  $('reset').click();assert.equal($('doneCount').textContent,'0');assert.equal($('exportNotes').textContent,'Export notes (1)');$('resetNotes').click();assert.equal($('exportNotes').textContent,'Export notes (0)');assert.deepEqual(a.errors,[]);a.close();
  }
 });
 test('Updated structure has unique controls, correct counts, searchable bullets and no image UI',()=>{
@@ -74,4 +74,35 @@ test('Saved progress and merged notes survive the split, merge and section moves
  a.close();
  const b=app(true,{[STORE]:saved});assert(b.d.querySelector('[data-id="c106"]').checked);b.close();
  const c=app(true,{[STORE]:['structure-updated','c106']});assert(!c.d.querySelector('[data-id="c106"]').checked);c.close();
+});
+test('Header actions sit below search and toggle all visible sections',()=>{
+ for(const mobile of [true,false]){
+  const a=app(mobile),{d,w}=a,$=id=>d.getElementById(id);
+  assert.deepEqual([...d.querySelector('.toolbar').children].map(e=>e.id),['search','collapseAll','reset','exportNotes','resetNotes']);
+  assert($('headerDetails').contains($('exportNotes')));
+  const expanded=()=>[...d.querySelectorAll('.inspection-section:not(.hidden)')].every(s=>!s.classList.contains('collapsed')&&s.querySelector('.section-toggle').getAttribute('aria-expanded')==='true');
+  assert.equal($('collapseAll').textContent,'Collapse all');$('collapseAll').click();
+  assert.equal($('collapseAll').textContent,'Uncollapse all');$('collapseAll').click();assert(expanded());
+  assert.equal($('collapseAll').textContent,'Collapse all');$('collapseAll').click();assert.equal(d.querySelectorAll('.inspection-section:not(.collapsed)').length,0);
+  $('search').value='brake';$('search').dispatchEvent(new w.Event('input'));
+  $('collapseAll').click();$('collapseAll').click();assert(expanded());
+  $('search').value='no matches xyz';$('search').dispatchEvent(new w.Event('input'));assert($('collapseAll').disabled);
+  $('search').value='';$('search').dispatchEvent(new w.Event('input'));assert(!$('collapseAll').disabled);
+  assert.deepEqual(a.errors,[]);a.close();
+ }
+});
+test('Reset actions affect only their own saved data and honor cancellation',()=>{
+ const STORE='cmv_school_pretrip_cleaned_v3',NOTES='cmv_pretrip_notes_v1';
+ for(const reset of ['reset','resetNotes']){
+  const a=app(true,{[STORE]:['structure-updated','september-11-updated','c1'],[NOTES]:{c1:{text:'Keep this note'}}}),{d,w}=a;
+  const initialChecks=w.localStorage.getItem(STORE),initialNotes=w.localStorage.getItem(NOTES);
+  w.confirm=()=>false;d.getElementById(reset).click();
+  assert.equal(w.localStorage.getItem(STORE),initialChecks);assert.equal(w.localStorage.getItem(NOTES),initialNotes);
+  w.confirm=()=>true;d.getElementById(reset).click();
+  assert.equal(d.querySelector('[data-id="c1"]').checked,reset==='resetNotes');
+  assert.equal(d.getElementById('exportNotes').textContent,reset==='reset'?'Export notes (1)':'Export notes (0)');
+  if(reset==='reset')assert.equal(w.localStorage.getItem(NOTES),initialNotes);
+  else {assert.equal(w.localStorage.getItem(STORE),initialChecks);assert.equal(w.localStorage.getItem(NOTES),'{}');}
+  assert.deepEqual(a.errors,[]);a.close();
+ }
 });

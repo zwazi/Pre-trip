@@ -27,8 +27,8 @@ h1{font-size:19px;line-height:1.15;margin:0 0 4px}
 .progress-label{font-size:12px;color:var(--muted);margin-bottom:5px}
 .progress-track{height:8px;border-radius:999px;background:#41413a;overflow:hidden}
 .progress-fill{height:100%;width:0;background:var(--ok);transition:width .18s ease}
-.toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;margin-top:11px}
-.search{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:9px;padding:10px 12px;outline:none}
+.toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:11px}
+.search{grid-column:1/-1;width:100%;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:9px;padding:10px 12px;outline:none}
 .search:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(232,183,107,.16)}
 .btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:9px;padding:9px 11px;cursor:pointer;font-weight:650}
 .btn:hover{background:var(--panel3)}
@@ -139,7 +139,7 @@ main{padding-top:22px}
 .task-check:checked~.card-body{opacity:.68}
 .task-check:focus-visible+.box,button:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
 .btn{min-height:44px}
-#reset{color:#f0b29a;background:#332622;border-color:#755447}
+#reset,#resetNotes{color:#f0b29a;background:#332622;border-color:#755447}
 .search{min-height:44px}
 [hidden]{display:none!important}
 .empty-state{padding:24px;text-align:center;color:var(--muted)}
@@ -170,7 +170,6 @@ main{padding-top:22px}
 .check-card:has(.task-check:checked) .check-details .script-lines{opacity:.68}
 .note-button.has-note{border-color:var(--accent);color:var(--accent)}
 .note-preview{flex-basis:100%;margin:0;padding:8px 10px;border-left:2px solid var(--accent);color:var(--muted);font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-#exportNotes{flex:none;font-size:13px;white-space:nowrap}
 .note-dialog{width:min(600px,calc(100% - 24px));max-height:85dvh;overflow:auto;border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--panel);color:var(--text)}
 .note-dialog::backdrop{background:rgba(0,0,0,.65)}
 .note-dialog h2{font-size:19px;margin:0 0 8px}
@@ -210,7 +209,6 @@ main{padding-top:22px}
 <span class="progress-track" style="display:block"><span class="progress-fill" id="progressFill" style="display:block"></span></span>
 </span><span class="header-chevron" aria-hidden="true">⌄</span>
 </button>
-<button class="btn" id="exportNotes" type="button">Export notes (0)</button>
 </div>
 <div class="header-details" id="headerDetails">
 <h1>CMV PRE-TRIP INSPECTION SCRIPT</h1>
@@ -218,7 +216,9 @@ main{padding-top:22px}
 <div class="toolbar">
 <input autocomplete="off" class="search" id="search" aria-label="Search the inspection script" placeholder="Search the script…" type="search"/>
 <button class="btn" id="collapseAll" type="button">Collapse all</button>
-<button class="btn" id="reset" type="button">Reset</button>
+<button class="btn" id="reset" type="button">Reset checks</button>
+<button class="btn" id="exportNotes" type="button">Export notes (0)</button>
+<button class="btn" id="resetNotes" type="button">Reset notes</button>
 </div>
 </div>
 </div>
@@ -2034,14 +2034,30 @@ main{padding-top:22px}
   });
 
   function syncCollapseButton() {
-    document.getElementById("collapseAll").disabled = sections.every(sec => sec.classList.contains("collapsed"));
+    const visible = sections.filter(sec => !sec.classList.contains("hidden"));
+    const button = document.getElementById("collapseAll");
+    button.textContent = visible.every(sec => sec.classList.contains("collapsed")) ? "Uncollapse all" : "Collapse all";
+    button.disabled = visible.length === 0;
   }
-  document.getElementById("collapseAll").addEventListener("click", () => setOpenSection(null));
+  document.getElementById("collapseAll").addEventListener("click", () => {
+    const visible = sections.filter(sec => !sec.classList.contains("hidden"));
+    const open = visible.every(sec => sec.classList.contains("collapsed"));
+    visible.forEach(sec => {
+      sec.classList.toggle("collapsed", !open);
+      sec.querySelector(".section-toggle").setAttribute("aria-expanded", String(open));
+    });
+    syncCollapseButton();
+  });
+  syncCollapseButton();
 
   document.getElementById("reset").addEventListener("click", () => {
-    if (!confirm("Clear every checklist mark and delete all notes? Export any notes you want to keep first.")) return;
+    if (!confirm("Clear every checklist mark?")) return;
     boxes.forEach(b => b.checked = false);
     save(); update();
+  });
+
+  document.getElementById("resetNotes").addEventListener("click", () => {
+    if (!confirm("Delete all notes? Export any notes you want to keep first.")) return;
     notes = {};
     try {
       localStorage.setItem(NOTES_STORE, JSON.stringify(notes));
@@ -2084,7 +2100,7 @@ main{padding-top:22px}
     syncCollapseButton();
     document.getElementById("emptyState").hidden = sections.some(sec => !sec.classList.contains("hidden"));
   });
-  // Notes use stable check IDs; Reset clears both notes and checklist progress.
+  // Notes use stable check IDs and have their own reset action.
   const NOTES_STORE = "cmv_pretrip_notes_v1";
   const noteDialog = document.getElementById("noteDialog");
   const noteText = document.getElementById("noteText");
