@@ -47,8 +47,8 @@ test('Updated structure has unique controls, correct counts, searchable bullets 
  const sectionIds=id=>[...d.querySelectorAll(`#${id} .task-check`)].map(b=>b.dataset.id);
  assert.deepEqual(sectionIds('section-15'),['c91','c98','c92','c93','c94','c96','c97','c95']);
  assert(sectionIds('section-16').includes('c99'));
- assert.deepEqual(sectionIds('section-17'),['c105','c106']);
- assert.deepEqual(sectionIds('section-17-suspension'),['c110-leaf-hangers','c110-leaf-springs','c110-u-bolts','c109','c110','c107','c108']);
+ assert.deepEqual(sectionIds('section-17'),['c105','c106','c107','c108']);
+ assert.deepEqual(sectionIds('section-17-suspension'),['c110-leaf-hangers','c110-leaf-springs','c110-u-bolts','c109','c110']);
  for(const box of d.querySelectorAll('.task-check')){
   const card=box.closest('.check-card'),toggle=card.querySelector('.details-toggle');
   assert.equal(d.getElementById(toggle.getAttribute('aria-controls')),card.querySelector('.check-details'));
